@@ -1,132 +1,203 @@
-import React, { Component } from 'react'
+import {Component} from 'react'
 import './App.css'
+
+const initialTodoList = [
+  {id: 1, title: 'Buy the groceries'},
+  {id: 2, title: 'Clean the house'},
+  {id: 3, title: 'Book the ticket'},
+  {id: 4, title: 'Pay the bills'},
+  {id: 5, title: 'Go to the gym'},
+  {id: 6, title: 'Call the doctor'},
+  {id: 7, title: 'Fix the car'},
+  {id: 8, title: 'Water the plants'},
+]
 
 class App extends Component {
   state = {
-    todos: [
-      { id: 1, title: 'Buy groceries', completed: false, editing: false },
-      { id: 2, title: 'Walk the dog', completed: false, editing: false },
-    ],
-    inputValue: '',
-    nextId: 3,
+    todoList: initialTodoList.map(todo => ({
+      ...todo,
+      isChecked: false,
+      isEditing: false,
+    })),
+    userInput: '',
+    nextId: 9,
   }
 
-  onChangeInput = e => {
-    this.setState({ inputValue: e.target.value })
+  onChangeUserInput = event => {
+    this.setState({userInput: event.target.value})
   }
 
-  onKeyDownInput = e => {
-    if (e.key === 'Enter') this.onClickAdd()
-  }
+  onAddTodo = () => {
+    const {userInput, todoList, nextId} = this.state
+    const trimmed = userInput.trim()
+    if (trimmed === '') return
 
-  onClickAdd = () => {
-    const { inputValue, todos, nextId } = this.state
-    const raw = inputValue.trim()
-    if (!raw) return
-    const parts = raw.split(' ')
-    const last = parts[parts.length - 1]
-    const count = parseInt(last, 10)
-    let newTodos = []
-    if (parts.length > 1 && !isNaN(count) && count > 0 && String(count) === last) {
+    const parts = trimmed.split(' ')
+    const lastWord = parts[parts.length - 1]
+    const count = parseInt(lastWord, 10)
+
+    if (
+      parts.length > 1 &&
+      !isNaN(count) &&
+      count > 0 &&
+      String(count) === lastWord
+    ) {
       const title = parts.slice(0, parts.length - 1).join(' ')
+      const newTodos = []
       for (let i = 0; i < count; i++) {
-        newTodos.push({ id: nextId + i, title, completed: false, editing: false })
+        newTodos.push({
+          id: nextId + i,
+          title,
+          isChecked: false,
+          isEditing: false,
+        })
       }
-      this.setState({ todos: [...todos, ...newTodos], inputValue: '', nextId: nextId + count })
+      this.setState({
+        todoList: [...todoList, ...newTodos],
+        userInput: '',
+        nextId: nextId + count,
+      })
     } else {
-      newTodos = [{ id: nextId, title: raw, completed: false, editing: false }]
-      this.setState({ todos: [...todos, ...newTodos], inputValue: '', nextId: nextId + 1 })
+      const newTodo = {
+        id: nextId,
+        title: trimmed,
+        isChecked: false,
+        isEditing: false,
+      }
+      this.setState({
+        todoList: [...todoList, newTodo],
+        userInput: '',
+        nextId: nextId + 1,
+      })
     }
   }
 
-  onClickDelete = id => {
-    this.setState(prev => ({ todos: prev.todos.filter(t => t.id !== id) }))
+  onDeleteTodo = id => {
+    const {todoList} = this.state
+    const updatedList = todoList.filter(todo => todo.id !== id)
+    this.setState({todoList: updatedList})
   }
 
-  onToggleComplete = id => {
-    this.setState(prev => ({
-      todos: prev.todos.map(t => t.id === id ? { ...t, completed: !t.completed } : t),
-    }))
+  onCheckTodo = id => {
+    const {todoList} = this.state
+    const updatedList = todoList.map(todo => {
+      if (todo.id === id) {
+        return {...todo, isChecked: !todo.isChecked}
+      }
+      return todo
+    })
+    this.setState({todoList: updatedList})
   }
 
   onClickEdit = id => {
-    this.setState(prev => ({
-      todos: prev.todos.map(t => ({ ...t, editing: t.id === id })),
+    const {todoList} = this.state
+    const updatedList = todoList.map(todo => ({
+      ...todo,
+      isEditing: todo.id === id,
     }))
+    this.setState({todoList: updatedList})
   }
 
-  onChangeEditInput = (e, id) => {
-    const val = e.target.value
-    this.setState(prev => ({
-      todos: prev.todos.map(t => t.id === id ? { ...t, title: val } : t),
-    }))
+  onChangeTodoTitle = (event, id) => {
+    const {todoList} = this.state
+    const updatedList = todoList.map(todo => {
+      if (todo.id === id) {
+        return {...todo, title: event.target.value}
+      }
+      return todo
+    })
+    this.setState({todoList: updatedList})
   }
 
   onClickSave = id => {
-    this.setState(prev => ({
-      todos: prev.todos.map(t => t.id === id ? { ...t, editing: false } : t),
-    }))
-  }
-
-  onKeyDownEdit = (e, id) => {
-    if (e.key === 'Enter') this.onClickSave(id)
+    const {todoList} = this.state
+    const updatedList = todoList.map(todo => {
+      if (todo.id === id) {
+        return {...todo, isEditing: false}
+      }
+      return todo
+    })
+    this.setState({todoList: updatedList})
   }
 
   render() {
-    const { todos, inputValue } = this.state
-    const completed = todos.filter(t => t.completed).length
+    const {todoList, userInput} = this.state
+
     return (
       <div className="app-container">
-        <div className="todo-card">
-          <h1 className="app-heading">Simple Todos</h1>
-          <div className="add-row">
+        <div className="todos-container">
+          <h1 className="todos-heading">Simple Todos</h1>
+          <div className="input-container">
             <input
-              className="todo-input"
               type="text"
-              value={inputValue}
-              onChange={this.onChangeInput}
-              onKeyDown={this.onKeyDownInput}
-              placeholder="Add todo… or 'Buy milk 3' for multiple"
+              className="todo-user-input"
+              value={userInput}
+              onChange={this.onChangeUserInput}
+              placeholder="What needs to be done?"
             />
-            <button className="btn-add" onClick={this.onClickAdd}>Add</button>
+            <button
+              type="button"
+              className="button add-button"
+              onClick={this.onAddTodo}
+            >
+              Add
+            </button>
           </div>
-          <hr className="divider" />
-          {todos.length === 0 && <p className="empty-state">No todos yet!</p>}
-          <ul className="todo-list">
-            {todos.map(todo => (
-              <li className="todo-item" key={todo.id}>
+          <ul className="todo-items-container">
+            {todoList.map(todo => (
+              <li key={todo.id} className="todo-item-container">
                 <input
                   type="checkbox"
-                  className="todo-checkbox"
-                  checked={todo.completed}
-                  onChange={() => this.onToggleComplete(todo.id)}
+                  id={`checkbox${todo.id}`}
+                  className="checkbox-input"
+                  checked={todo.isChecked}
+                  onChange={() => this.onCheckTodo(todo.id)}
                 />
-                {todo.editing ? (
+                {todo.isEditing ? (
                   <input
-                    className="edit-input"
                     type="text"
+                    className="todo-user-input"
                     value={todo.title}
-                    onChange={e => this.onChangeEditInput(e, todo.id)}
-                    onKeyDown={e => this.onKeyDownEdit(e, todo.id)}
-                    autoFocus
+                    onChange={event =>
+                      this.onChangeTodoTitle(event, todo.id)
+                    }
                   />
                 ) : (
-                  <span className={`todo-title ${todo.completed ? 'completed' : ''}`}>
+                  <p
+                    className={
+                      todo.isChecked ? 'checked todo-label' : 'todo-label'
+                    }
+                  >
                     {todo.title}
-                  </span>
+                  </p>
                 )}
-                {todo.editing ? (
-                  <button className="btn-save" onClick={() => this.onClickSave(todo.id)}>Save</button>
+                {todo.isEditing ? (
+                  <button
+                    type="button"
+                    className="button save-button"
+                    onClick={() => this.onClickSave(todo.id)}
+                  >
+                    Save
+                  </button>
                 ) : (
-                  <button className="btn-edit" onClick={() => this.onClickEdit(todo.id)}>Edit</button>
+                  <button
+                    type="button"
+                    className="button edit-button"
+                    onClick={() => this.onClickEdit(todo.id)}
+                  >
+                    Edit
+                  </button>
                 )}
-                <button className="btn-delete" onClick={() => this.onClickDelete(todo.id)}>Delete</button>
+                <button
+                  type="button"
+                  className="button delete-button"
+                  onClick={() => this.onDeleteTodo(todo.id)}
+                >
+                  Delete
+                </button>
               </li>
             ))}
           </ul>
-          {todos.length > 0 && (
-            <p className="stats"><strong>{completed}</strong> of <strong>{todos.length}</strong> completed</p>
-          )}
         </div>
       </div>
     )

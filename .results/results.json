@@ -1,0 +1,98 @@
+{
+  "test_case_results": [
+    {
+      "test_case_id": "RJSCPATI82_TEST_1",
+      "evaluation_result": "CORRECT",
+      "title": "Page should consist of at least two HTML list items and the initialTodosList should be rendered using a unique key as a prop for each todo item",
+      "errorMessages": []
+    },
+    {
+      "test_case_id": "RJSCPATI82_TEST_2",
+      "evaluation_result": "INCORRECT",
+      "title": "Page should consist of HTML main heading element with text content as \"Simple Todos\"",
+      "errorMessages": [
+        "TypeError: expect(...).toBeInTheDocument is not a function"
+      ]
+    },
+    {
+      "test_case_id": "RJSCPATI82_TEST_3",
+      "evaluation_result": "INCORRECT",
+      "title": "Page should initially consists of an HTML input element and an \"Add\" button",
+      "errorMessages": [
+        "TypeError: expect(...).toBeInTheDocument is not a function"
+      ]
+    },
+    {
+      "test_case_id": "RJSCPATI82_TEST_4",
+      "evaluation_result": "INCORRECT",
+      "title": "Page should initially consist of HTML paragraph elements with text content as the values of the key \"title\" from the initialTodoList provided",
+      "errorMessages": [
+        "TestingLibraryElementError: Unable to find an element with the text: Book the ticket for today evening. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible."
+      ]
+    },
+    {
+      "test_case_id": "RJSCPATI82_TEST_5",
+      "evaluation_result": "INCORRECT",
+      "title": "Page should initially consist of at least eight HTML button elements with text content as \"Delete\"",
+      "errorMessages": [
+        "\nExpected: >= 8\nReceived:    2"
+      ]
+    },
+    {
+      "test_case_id": "RJSCPATI82_TEST_6",
+      "evaluation_result": "INCORRECT",
+      "title": "Page should initially consist of at least eight HTML button elements with text content as \"Edit\"",
+      "errorMessages": [
+        "\nExpected: >= 8\nReceived:    2"
+      ]
+    },
+    {
+      "test_case_id": "RJSCPATI82_TEST_7",
+      "evaluation_result": "INCORRECT",
+      "title": "When an \"Edit\" button is clicked, the button must be replaced with \"Save\" button",
+      "errorMessages": [
+        "TypeError: Cannot read properties of undefined (reading 'tagName')"
+      ]
+    },
+    {
+      "test_case_id": "RJSCPATI82_TEST_8",
+      "evaluation_result": "INCORRECT",
+      "title": "When an Edit button is clicked, the corresponding todo element should turn into an input element with pre-filled text same as the todo element text",
+      "errorMessages": [
+        "TestingLibraryElementError: Unable to find an element with the display value: Book the ticket for today evening."
+      ]
+    },
+    {
+      "test_case_id": "RJSCPATI82_TEST_9",
+      "evaluation_result": "INCORRECT",
+      "title": "When the Save button is clicked, the corresponding todo element should turn into a paragraph element with the text same as the updated text",
+      "errorMessages": [
+        "TestingLibraryElementError: Unable to find an accessible element with the role \"button\" and name `/Save/i`"
+      ]
+    },
+    {
+      "test_case_id": "RJSCPATI82_TEST_10",
+      "evaluation_result": "INCORRECT",
+      "title": "When the Delete button of a todo item is clicked, the respective todo item should be deleted",
+      "errorMessages": [
+        "TypeError: expect(...).not.toBeInTheDocument is not a function"
+      ]
+    },
+    {
+      "test_case_id": "RJSCPATI82_TEST_11",
+      "evaluation_result": "INCORRECT",
+      "title": "When an input is provided and the \"Add\" button is clicked, the todo item should be added to the todo list",
+      "errorMessages": [
+        "TestingLibraryElementError: Found multiple elements with the text: Buy groceries"
+      ]
+    },
+    {
+      "test_case_id": "RJSCPATI82_TEST_12",
+      "evaluation_result": "INCORRECT",
+      "title": "When an input is provided, and it contains a number at end of the input value, then that number of todo items should be added to the todo list ",
+      "errorMessages": [
+        "\nExpected: 13\nReceived: 14"
+      ]
+    }
+  ]
+}
