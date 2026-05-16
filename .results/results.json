@@ -32,26 +32,22 @@
     },
     {
       "test_case_id": "RJSCPATI82_TEST_5",
-      "evaluation_result": "INCORRECT",
+      "evaluation_result": "CORRECT",
       "title": "Page should initially consist of at least eight HTML button elements with text content as \"Delete\"",
-      "errorMessages": [
-        "\nExpected: >= 8\nReceived:    2"
-      ]
+      "errorMessages": []
     },
     {
       "test_case_id": "RJSCPATI82_TEST_6",
-      "evaluation_result": "INCORRECT",
+      "evaluation_result": "CORRECT",
       "title": "Page should initially consist of at least eight HTML button elements with text content as \"Edit\"",
-      "errorMessages": [
-        "\nExpected: >= 8\nReceived:    2"
-      ]
+      "errorMessages": []
     },
     {
       "test_case_id": "RJSCPATI82_TEST_7",
       "evaluation_result": "INCORRECT",
       "title": "When an \"Edit\" button is clicked, the button must be replaced with \"Save\" button",
       "errorMessages": [
-        "TypeError: Cannot read properties of undefined (reading 'tagName')"
+        "\nExpected: >= 4\nReceived:    1"
       ]
     },
     {
@@ -83,16 +79,14 @@
       "evaluation_result": "INCORRECT",
       "title": "When an input is provided and the \"Add\" button is clicked, the todo item should be added to the todo list",
       "errorMessages": [
-        "TestingLibraryElementError: Found multiple elements with the text: Buy groceries"
+        "TypeError: expect(...).toBeInTheDocument is not a function"
       ]
     },
     {
       "test_case_id": "RJSCPATI82_TEST_12",
-      "evaluation_result": "INCORRECT",
+      "evaluation_result": "CORRECT",
       "title": "When an input is provided, and it contains a number at end of the input value, then that number of todo items should be added to the todo list ",
-      "errorMessages": [
-        "\nExpected: 13\nReceived: 14"
-      ]
+      "errorMessages": []
     }
   ]
 }

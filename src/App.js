@@ -1,4 +1,4 @@
-import {Component} from 'react'
+import React, {Component} from 'react'
 import './App.css'
 
 const initialTodoList = [
@@ -14,8 +14,9 @@ const initialTodoList = [
 
 class App extends Component {
   state = {
-    todoList: initialTodoList.map(todo => ({
-      ...todo,
+    todoList: initialTodoList.map(each => ({
+      id: each.id,
+      title: each.title,
       isChecked: false,
       isEditing: false,
     })),
@@ -27,7 +28,7 @@ class App extends Component {
     this.setState({userInput: event.target.value})
   }
 
-  onAddTodo = () => {
+  onClickAdd = () => {
     const {userInput, todoList, nextId} = this.state
     const trimmed = userInput.trim()
     if (trimmed === '') return
@@ -47,7 +48,7 @@ class App extends Component {
       for (let i = 0; i < count; i++) {
         newTodos.push({
           id: nextId + i,
-          title,
+          title: title,
           isChecked: false,
           isEditing: false,
         })
@@ -72,50 +73,52 @@ class App extends Component {
     }
   }
 
-  onDeleteTodo = id => {
+  onClickDelete = id => {
     const {todoList} = this.state
-    const updatedList = todoList.filter(todo => todo.id !== id)
+    const updatedList = todoList.filter(eachTodo => eachTodo.id !== id)
     this.setState({todoList: updatedList})
   }
 
-  onCheckTodo = id => {
+  onClickCheckbox = id => {
     const {todoList} = this.state
-    const updatedList = todoList.map(todo => {
-      if (todo.id === id) {
-        return {...todo, isChecked: !todo.isChecked}
+    const updatedList = todoList.map(eachTodo => {
+      if (eachTodo.id === id) {
+        return {...eachTodo, isChecked: !eachTodo.isChecked}
       }
-      return todo
+      return eachTodo
     })
     this.setState({todoList: updatedList})
   }
 
   onClickEdit = id => {
     const {todoList} = this.state
-    const updatedList = todoList.map(todo => ({
-      ...todo,
-      isEditing: todo.id === id,
-    }))
+    const updatedList = todoList.map(eachTodo => {
+      if (eachTodo.id === id) {
+        return {...eachTodo, isEditing: true}
+      }
+      return {...eachTodo, isEditing: false}
+    })
     this.setState({todoList: updatedList})
   }
 
-  onChangeTodoTitle = (event, id) => {
+  onChangeEditInput = (event, id) => {
     const {todoList} = this.state
-    const updatedList = todoList.map(todo => {
-      if (todo.id === id) {
-        return {...todo, title: event.target.value}
+    const updatedList = todoList.map(eachTodo => {
+      if (eachTodo.id === id) {
+        return {...eachTodo, title: event.target.value}
       }
-      return todo
+      return eachTodo
     })
     this.setState({todoList: updatedList})
   }
 
   onClickSave = id => {
     const {todoList} = this.state
-    const updatedList = todoList.map(todo => {
-      if (todo.id === id) {
-        return {...todo, isEditing: false}
+    const updatedList = todoList.map(eachTodo => {
+      if (eachTodo.id === id) {
+        return {...eachTodo, isEditing: false}
       }
-      return todo
+      return eachTodo
     })
     this.setState({todoList: updatedList})
   }
@@ -138,44 +141,46 @@ class App extends Component {
             <button
               type="button"
               className="button add-button"
-              onClick={this.onAddTodo}
+              onClick={this.onClickAdd}
             >
               Add
             </button>
           </div>
           <ul className="todo-items-container">
-            {todoList.map(todo => (
-              <li key={todo.id} className="todo-item-container">
+            {todoList.map(eachTodo => (
+              <li key={eachTodo.id} className="todo-item-container">
                 <input
                   type="checkbox"
-                  id={`checkbox${todo.id}`}
+                  id={`checkbox${eachTodo.id}`}
                   className="checkbox-input"
-                  checked={todo.isChecked}
-                  onChange={() => this.onCheckTodo(todo.id)}
+                  checked={eachTodo.isChecked}
+                  onChange={() => this.onClickCheckbox(eachTodo.id)}
                 />
-                {todo.isEditing ? (
+                {eachTodo.isEditing ? (
                   <input
                     type="text"
                     className="todo-user-input"
-                    value={todo.title}
+                    value={eachTodo.title}
                     onChange={event =>
-                      this.onChangeTodoTitle(event, todo.id)
+                      this.onChangeEditInput(event, eachTodo.id)
                     }
                   />
                 ) : (
                   <p
                     className={
-                      todo.isChecked ? 'checked todo-label' : 'todo-label'
+                      eachTodo.isChecked
+                        ? 'checked todo-label'
+                        : 'todo-label'
                     }
                   >
-                    {todo.title}
+                    {eachTodo.title}
                   </p>
                 )}
-                {todo.isEditing ? (
+                {eachTodo.isEditing ? (
                   <button
                     type="button"
                     className="button save-button"
-                    onClick={() => this.onClickSave(todo.id)}
+                    onClick={() => this.onClickSave(eachTodo.id)}
                   >
                     Save
                   </button>
@@ -183,7 +188,7 @@ class App extends Component {
                   <button
                     type="button"
                     className="button edit-button"
-                    onClick={() => this.onClickEdit(todo.id)}
+                    onClick={() => this.onClickEdit(eachTodo.id)}
                   >
                     Edit
                   </button>
@@ -191,7 +196,7 @@ class App extends Component {
                 <button
                   type="button"
                   className="button delete-button"
-                  onClick={() => this.onDeleteTodo(todo.id)}
+                  onClick={() => this.onClickDelete(eachTodo.id)}
                 >
                   Delete
                 </button>
